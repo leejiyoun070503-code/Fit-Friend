@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFriend - AI 기반 맞춤형 웨이트 트레이닝 루틴 추천</title>
+    <!-- Google Fonts: Outfit, Inter, Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-logo" id="logo-btn">
+                <span class="logo-accent">Fit</span>Friend
+            </div>
+            <nav class="header-nav">
+                <button class="nav-btn active" data-target="home-view">홈</button>
+                <button class="nav-btn" data-target="wizard-view">루틴 생성</button>
+                <button class="nav-btn" data-target="my-routines-view">내 보관함</button>
+            </nav>
+        </header>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="toast hidden">루틴이 성공적으로 저장되었습니다!</div>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- View 1: Home/Landing Page -->
+            <section id="home-view" class="app-view active">
+                <div class="hero-section">
+                    <div class="hero-badge">대학생 & 초보자를 위한 AI 헬스 메이트</div>
+                    <h1 class="hero-title">오늘 어떤 운동을,<br>어떻게 해야 할지 고민이신가요?</h1>
+                    <p class="hero-subtitle">
+                        FitFriend는 운동 부위, 목표, 경력, 가능 시간 및 장비를 분석하여<br>
+                        단 1분 만에 당신만을 위한 완벽한 일일 운동 계획과 가이드를 완성해 드립니다.
+                    </p>
+                    <div class="hero-cta-group">
+                        <button class="btn btn-primary btn-lg" onclick="app.navigateTo('wizard-view')">
+                            나만의 루틴 만들기
+                            <svg class="icon-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                        <button class="btn btn-secondary btn-lg" onclick="app.navigateTo('my-routines-view')">
+                            내 보관함 불러오기
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feature Grid -->
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>1분 맞춤 루틴</h3>
+                        <p>부위, 목적, 시간, 기구 요건을 AI가 분석해 과학적인 운동 순서로 일정을 설계합니다.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>RIR 강도 가이드</h3>
+                        <p>정확한 적정 무게 설정법과 세트당 여유 반복 횟수(RIR)를 처방하여 안전하고 확실하게 운동합니다.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎥</div>
+                        <h3>동영상 & 자세 가이드</h3>
+                        <p>자세한 단계별 시각 자료, 주의사항 및 엄선된 동작 영상을 제공해 부상을 미연에 방지합니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 2: Wizard / Generator Page -->
+            <section id="wizard-view" class="app-view">
+                <div class="wizard-container">
+                    <div class="wizard-header">
+                        <h2>맞춤 루틴 생성기</h2>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="wizard-progress"></div>
+                        </div>
+                        <div class="step-indicator" id="step-indicator">Step 1 of 5</div>
+                    </div>
+
+                    <!-- Wizard Form Container -->
+                    <div class="wizard-steps-container">
+                        
+                        <!-- Step 1: 운동 부위 -->
+                        <div class="wizard-step active" data-step="1">
+                            <h3 class="step-title">1. 집중하고 싶은 운동 부위를 선택하세요.</h3>
+                            <div class="card-options-grid">
+                                <label class="option-card">
+                                    <input type="radio" name="workout-target" value="가슴" checked>
+                                    <div class="option-card-content">
+                                        <span class="option-icon">💪</span>
+                                        <span class="option-name">가슴</span>
+                                        <span class="option-desc">대흉근 발달, 볼륨감 형성</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-target" value="등">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">👐</span>
+                                        <span class="option-name">등</span>
+                                        <span class="option-desc">광배근, 승모근 등 넓은 프레임</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-target" value="어깨">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🛡️</span>
+                                        <span class="option-name">어깨</span>
+                                        <span class="option-desc">삼각근 강화, 직각 어깨 라인</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-target" value="하체">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🦵</span>
+                                        <span class="option-name">하체</span>
+                                        <span class="option-desc">대퇴사두, 둔근 등 전신 힘의 원천</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-target" value="복근">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🍫</span>
+                                        <span class="option-name">복근</span>
+                                        <span class="option-desc">코어 근력 강화 및 선명도 독려</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-target" value="이두">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">💥</span>
+                                        <span class="option-name">이두</span>
+                                        <span class="option-desc">상완이두근 집중 발달</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-target" value="삼두">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">⚡</span>
+                                        <span class="option-name">삼두</span>
+                                        <span class="option-desc">팔 뒤쪽 상완삼두근 근력 증대</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: 운동 목적 -->
+                        <div class="wizard-step" data-step="2">
+                            <h3 class="step-title">2. 운동 목적을 선택하세요.</h3>
+                            <div class="card-options-grid col-3">
+                                <label class="option-card">
+                                    <input type="radio" name="workout-goal" value="근비대" checked>
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🔥</span>
+                                        <span class="option-name">근비대 (Muscle Size)</span>
+                                        <span class="option-desc">근육량 증가와 볼륨을 극대화</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-goal" value="체지방 감량">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">💦</span>
+                                        <span class="option-name">체지방 감량 (Diet)</span>
+                                        <span class="option-desc">높은 대사 자극과 칼로리 연소</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-goal" value="체력 향상">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🏋️</span>
+                                        <span class="option-name">체력 향상 (Strength)</span>
+                                        <span class="option-desc">기본 피지컬 및 전반적 스트렝스 향상</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: 운동 경력 -->
+                        <div class="wizard-step" data-step="3">
+                            <h3 class="step-title">3. 현재 본인의 운동 경력을 선택하세요.</h3>
+                            <div class="card-options-grid col-3">
+                                <label class="option-card">
+                                    <input type="radio" name="workout-level" value="초보" checked>
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🌱</span>
+                                        <span class="option-name">초보자 (Beginner)</span>
+                                        <span class="option-desc">기본 자세를 익히며 적응하는 단계</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-level" value="중급">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🌿</span>
+                                        <span class="option-name">중급자 (Intermediate)</span>
+                                        <span class="option-desc">자세를 인지하고 타겟 자극을 아는 단계</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-level" value="고급">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🌳</span>
+                                        <span class="option-name">고급자 (Advanced)</span>
+                                        <span class="option-desc">고중량 및 고강도 분할 자극 훈련 단계</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: 가능 시간 -->
+                        <div class="wizard-step" data-step="4">
+                            <h3 class="step-title">4. 오늘 운동에 가용할 수 있는 시간은 얼마인가요?</h3>
+                            <div class="card-options-grid col-4">
+                                <label class="option-card">
+                                    <input type="radio" name="workout-duration" value="30분">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">⏱️</span>
+                                        <span class="option-name">30분</span>
+                                        <span class="option-desc">핵심 위주 단기 집중 루틴 (3종목)</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-duration" value="60분" checked>
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🕐</span>
+                                        <span class="option-name">60분</span>
+                                        <span class="option-desc">가장 스탠다드한 운동 시간 (4종목)</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-duration" value="90분">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">⏳</span>
+                                        <span class="option-name">90분</span>
+                                        <span class="option-desc">주동근-보조근 완벽 타겟 루틴 (5-6종목)</span>
+                                    </div>
+                                </label>
+                                <label class="option-card">
+                                    <input type="radio" name="workout-duration" value="90분 이상">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🔋</span>
+                                        <span class="option-name">90분 이상</span>
+                                        <span class="option-desc">고강도 다종목 볼륨 루틴 (7종목)</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: 사용 장비 -->
+                        <div class="wizard-step" data-step="5">
+                            <h3 class="step-title">5. 사용 가능한 운동 장비를 모두 선택하세요. (중복 선택)</h3>
+                            <div class="card-options-grid col-4">
+                                <label class="option-card checkbox-card">
+                                    <input type="checkbox" name="workout-equipment" value="머신" checked>
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🤖</span>
+                                        <span class="option-name">머신 (Machine)</span>
+                                        <span class="option-desc">기구 궤적으로 안전한 운동 가능</span>
+                                    </div>
+                                </label>
+                                <label class="option-card checkbox-card">
+                                    <input type="checkbox" name="workout-equipment" value="덤벨" checked>
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🎒</span>
+                                        <span class="option-name">덤벨 (Dumbbell)</span>
+                                        <span class="option-desc">자유로운 관절 가동 범위 확보</span>
+                                    </div>
+                                </label>
+                                <label class="option-card checkbox-card">
+                                    <input type="checkbox" name="workout-equipment" value="바벨" checked>
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🏋️</span>
+                                        <span class="option-name">바벨 (Barbell)</span>
+                                        <span class="option-desc">고중량을 통한 스트렝스 향상에 유리</span>
+                                    </div>
+                                </label>
+                                <label class="option-card checkbox-card">
+                                    <input type="checkbox" name="workout-equipment" value="맨몸">
+                                    <div class="option-card-content">
+                                        <span class="option-icon">🧘</span>
+                                        <span class="option-name">맨몸 (Bodyweight)</span>
+                                        <span class="option-desc">자신의 체중을 이용해 저항 훈련</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Wizard Navigation Buttons -->
+                    <div class="wizard-buttons">
+                        <button class="btn btn-secondary hidden" id="wizard-prev-btn">이전 단계</button>
+                        <button class="btn btn-primary" id="wizard-next-btn">다음 단계</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- View 3: Routine Results Page -->
+            <section id="results-view" class="app-view">
+                <div class="results-container">
+                    
+                    <!-- Result Summary Header -->
+                    <div class="results-header">
+                        <div class="results-title-group">
+                            <span class="badge" id="results-badge-level">초보자용</span>
+                            <h2 id="results-title-text">나의 맞춤형 가슴 운동 루틴</h2>
+                        </div>
+                        <div class="results-meta-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">예상 소요 시간</span>
+                                <span class="metric-value" id="results-metric-time">60분</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">추천 종목 수</span>
+                                <span class="metric-value" id="results-metric-count">4개</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">권장 강도</span>
+                                <span class="metric-value font-neon" id="results-metric-rir">RIR 2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIR Warning banner -->
+                    <div class="rir-banner">
+                        <span class="banner-icon">💡</span>
+                        <div class="banner-body">
+                            <strong>RIR 2 란?</strong> "마지막에 스스로 2번을 더 반복할 수 있는 여유가 남는 지점의 중량"을 설정하라는 뜻입니다. 초보자의 근육 통제와 부상 방지를 위해 실패 지점 직전에 멈추는 적정 강도 설정을 안내합니다.
+                        </div>
+                    </div>
+
+                    <!-- Recommended Exercise List -->
+                    <div class="exercise-list-container">
+                        <h3>추천 운동 순서 및 상세 가이드</h3>
+                        <p class="section-desc">가장 힘이 충만한 운동 시작 단계에 다관절 중심의 바벨/덤벨 운동을, 후반부에 고립형 머신 운동을 배치했습니다.</p>
+                        
+                        <div class="exercise-cards-list" id="recommended-exercises-list">
+                            <!-- JS Dynamically inject cards -->
+                        </div>
+                    </div>
+
+                    <!-- Footer Action buttons -->
+                    <div class="results-actions">
+                        <button class="btn btn-secondary" onclick="app.navigateTo('wizard-view')">다시 만들기</button>
+                        <button class="btn btn-primary" id="save-routine-btn">이 루틴 저장하기</button>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- View 4: My Routines Page -->
+            <section id="my-routines-view" class="app-view">
+                <div class="my-routines-container">
+                    <div class="section-header">
+                        <h2>내 저장소</h2>
+                        <p>내가 저장한 나만의 운동 루틴 목록을 관리하고 즉시 불러올 수 있습니다.</p>
+                    </div>
+
+                    <div class="my-routines-grid" id="saved-routines-list">
+                        <!-- JS dynamically injects saved routines cards -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- View 5: Exercise Detail Slide Drawer Overlay -->
+        <div class="drawer-overlay hidden" id="exercise-drawer">
+            <div class="drawer-content">
+                <button class="drawer-close-btn" id="close-drawer-btn">&times;</button>
+                
+                <div class="drawer-body" id="drawer-body-content">
+                    <!-- JS dynamically injects exercise detail content here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Routine Save Name Dialog Modal -->
+        <div class="dialog-overlay hidden" id="save-dialog">
+            <div class="dialog-content">
+                <h3>루틴 저장</h3>
+                <p>보관함에 저장할 루틴의 별칭을 입력해 주세요.</p>
+                <input type="text" id="routine-save-name" placeholder="예: 화요일 가슴 박살내기, 초보 가슴 60분">
+                <div class="dialog-actions">
+                    <button class="btn btn-secondary" id="dialog-cancel-btn">취소</button>
+                    <button class="btn btn-primary" id="dialog-confirm-btn">저장 완료</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- App JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
